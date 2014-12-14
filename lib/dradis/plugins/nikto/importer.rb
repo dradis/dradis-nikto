@@ -62,12 +62,11 @@ module Dradis::Plugins::Nikto
         end
 
         scan_details.xpath("item").each do |item|
-          item_text = "#[Title]#\n"
-          item_text = "Finding\n"
-          item_text = "#[Details]#\n"
+          item_text  = "#[Title]#\n"
+          item_text += "Finding\n\n"
+          item_text += "#[Details]#\n"
 
-          item_title = "Unknown"
-          item_title = item["id"] if item.has_attribute? "id"
+          item_title = item.has_attribute?("id") ? item["id"] : "Unknown"
           if item.has_attribute? 'osvdbid'
             if item.has_attribute? 'osvdblink'
               item_text += 'OSVDB = "' + item['osvdbid'] + '":' + item['osvdblink'] + "\n"
