@@ -1,6 +1,6 @@
 module Dradis
   module Plugins
-    module Dradis
+    module Nikto
       # Returns the version of the currently loaded Dradis as a <tt>Gem::Version</tt>
       def self.gem_version
         Gem::Version.new VERSION::STRING

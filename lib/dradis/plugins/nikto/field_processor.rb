@@ -1,6 +1,6 @@
 module Dradis
   module Plugins
-    module Dradis
+    module Nikto
       class FieldProcessor < Dradis::Plugins::Upload::FieldProcessor
       end
     end
