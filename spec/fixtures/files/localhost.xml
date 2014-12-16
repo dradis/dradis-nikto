@@ -25,7 +25,7 @@
 <iplink><![CDATA[http://127.0.0.1:80/]]></iplink>
 </item>
 
-<item id="750000" osvdbid="3268" osvdblink="3268_LINK" method="GET">
+<item id="750000" method="GET">
 <description><![CDATA[/?show=http://cirt.net/rfiinc.txt??: Directory indexing found.]]></description>
 <uri><![CDATA[/?show=http://cirt.net/rfiinc.txt??]]></uri>
 <namelink><![CDATA[http://localhost:80/?show=http://cirt.net/rfiinc.txt??]]></namelink>
