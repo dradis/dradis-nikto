@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<!DOCTYPE niktoscan SYSTEM "docs/nikto.dtd">
+<niktoscan hoststest="0" options="-h localhost -p 80 -out /tmp/localhost.xml" version="2.1.4" scanstart="Sun Jul 17 19:54:10 2011" scanend="Thu Jan  1 01:00:00 1970" scanelapsed=" seconds" nxmlversion="1.1">
+<scandetails targetip="127.0.0.1" targethostname="localhost" targetport="80" targetbanner="Apache/2.2.16 (Debian)" starttime="2011-07-18 19:54:10" sitename="http://localhost:80/" siteip="http://127.0.0.1:80/" hostheader="localhost">
+
+
+<item id="750000" osvdbid="3268" osvdblink="3268_LINK" method="GET">
+<description><![CDATA[/: Directory indexing found.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://localhost:80/]]></namelink>
+<iplink><![CDATA[http://127.0.0.1:80/]]></iplink>
+</item>
+
+<item id="600050" osvdbid="0" osvdblink="0_LINK" method="HEAD">
+<description><![CDATA[Apache/2.2.16 appears to be outdated (current is at least Apache/2.2.19). Apache 1.3.42 (final release) and 2.0.64 are also current.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://localhost:80/]]></namelink>
+<iplink><![CDATA[http://127.0.0.1:80/]]></iplink>
+</item>
+
+<item id="999990" osvdbid="0" osvdblink="0_LINK" method="GET">
+<description><![CDATA[Allowed HTTP Methods: GET, HEAD, POST, OPTIONS ]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://localhost:80/]]></namelink>
+<iplink><![CDATA[http://127.0.0.1:80/]]></iplink>
+</item>
+
+<item id="750000" osvdbid="3268" osvdblink="3268_LINK" method="GET">
+<description><![CDATA[/?show=http://cirt.net/rfiinc.txt??: Directory indexing found.]]></description>
+<uri><![CDATA[/?show=http://cirt.net/rfiinc.txt??]]></uri>
+<namelink><![CDATA[http://localhost:80/?show=http://cirt.net/rfiinc.txt??]]></namelink>
+<iplink><![CDATA[http://127.0.0.1:80/?show=http://cirt.net/rfiinc.txt??]]></iplink>
+</item>
+
+<statistics elapsed="10" itemsfound="44" itemstested="6456" endtime="2011-07-18 19:54:20" />
+</scandetails>
+
+
+</niktoscan>
