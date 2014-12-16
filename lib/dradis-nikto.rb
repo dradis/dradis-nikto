@@ -3,3 +3,6 @@ require 'dradis-plugins'
 
 # Load this add-on's engine
 require 'dradis/plugins/nikto'
+
+# Load supporting Nikto classes
+require 'nikto/item'
