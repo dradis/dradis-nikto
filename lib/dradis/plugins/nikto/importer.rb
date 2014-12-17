@@ -32,42 +32,28 @@ module Dradis::Plugins::Nikto
           host_label = xml_scan['siteip']
         end
 
-        # The rand is good for debugging as it means each node is fairly unique
-        # host_label = host_label + " - " + Configuration.parent_node + rand(99).to_s
+        # Hack to include the file name in the xml
+        # so we can use it in the template
+        xml_scan['filename'] = file_name
 
+        # Scan details
         logger.info{ 'Adding ' + host_label }
-
         host_node = content_service.create_node(label: host_label, type: :host)
-
-        node_text = "#[Details]#\n"
-        node_text += "IP = " + xml_scan['targetip'] + "\n" if xml_scan.has_attribute? "targetip"
-        node_text += "Hostname = " + xml_scan['targethostname'] + "\n" if xml_scan.has_attribute? "targethostname"
-        node_text += "Port = " + xml_scan['targetport'] + "\n" if xml_scan.has_attribute? "targetport"
-        node_text += "Banner = " + xml_scan['targetbanner'] + "\n" if xml_scan.has_attribute? "targetbanner"
-        node_text += "Starttime = " + xml_scan['starttime'] + "\n" if xml_scan.has_attribute? "starttime"
-        node_text += "Site Name = " + xml_scan['sitename'] + "\n" if xml_scan.has_attribute? "sitename"
-        node_text += "Site IP = " + xml_scan['siteip'] + "\n" if xml_scan.has_attribute? "siteip"
-        node_text += "Host Header = " + xml_scan['hostheader'] + "\n" if xml_scan.has_attribute? "hostheader"
-        node_text += "Errors = " + xml_scan['errors'] + "\n" if xml_scan.has_attribute? "errors"
-        node_text += "Total Checks = " + xml_scan['checks'] + "\n" if xml_scan.has_attribute? "checks"
-
+        scan_text = template_service.process_template(template: 'scan', data: xml_scan)
         content_service.create_note(
-          text: "#[Title]#\nNikto upload: #{file_name}\n\n#{node_text}",
+          text: scan_text,
           node: host_node)
 
         # Check for SSL cert tag and add that data in as well
         unless xml_scan.at_xpath("ssl").nil?
-          ssl_details = xml_scan.at_xpath("ssl")
-          node_text = "#[Details]#\n"
-          node_text += "Ciphers = " + ssl_details['ciphers'] + "\n" if ssl_details.has_attribute? "ciphers"
-          node_text += "Issuers = " + ssl_details['issuers'] + "\n" if ssl_details.has_attribute? "issuers"
-          node_text += "Info = " + ssl_details['info'] + "\n" if ssl_details.has_attribute? "info"
-
+          xml_ssl = xml_scan.at_xpath("ssl")
+          ssl_text = template_service.process_template(template: 'ssl', data: xml_ssl)
           content_service.create_note(
-            text: "#[Title]#\nSSL Cert Information\n\n#{node_text}",
+            text: ssl_text,
             node: host_node)
         end
 
+        # Items
         xml_scan.xpath("item").each do |xml_item|
           item_label = xml_item.has_attribute?("id") ? xml_item["id"] : "Unknown"
           item_node = content_service.create_node(

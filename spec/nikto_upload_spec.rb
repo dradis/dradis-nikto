@@ -55,6 +55,12 @@ describe 'Nikto upload plugin' do
         expect(args[:text]).to_not include("not recognized by the plugin")
         OpenStruct.new(args)
       end.once
+      expect(@content_service).to receive(:create_note) do |args|
+        expect(args[:node].label).to eq("http://localhost:80/")
+        expect(args[:text]).to include("SSL Cert Information")
+        expect(args[:text]).to_not include("not recognized by the plugin")
+        OpenStruct.new(args)
+      end.once
 
       expect(@content_service).to receive(:create_node) do |args|
         expect(args[:label]).to eq('750000')
