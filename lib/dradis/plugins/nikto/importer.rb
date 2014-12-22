@@ -18,76 +18,53 @@ module Dradis::Plugins::Nikto
       doc = Nokogiri::XML(xml)
       logger.info{ 'Done.' }
 
-      doc.xpath('/nikto/niktoscan/scandetails').each do |scan_details|
-        if scan_details.has_attribute? "sitename"
-          host_label = scan_details['sitename']
+      if doc.xpath('/nikto/niktoscan/scandetails').empty?
+        error = "No scan results were detected in the uploaded file (/nikto/niktoscan/scandetails). Ensure you uploaded a Nikto XML report."
+        logger.fatal{ error }
+        content_service.create_note text: error
+        return false
+      end
+
+      doc.xpath('/nikto/niktoscan/scandetails').each do |xml_scan|
+        if xml_scan.has_attribute? "sitename"
+          host_label = xml_scan['sitename']
         else
-          host_label = scan_details['siteip']
+          host_label = xml_scan['siteip']
         end
 
-        # The rand is good for debugging as it means each node is fairly unique
-        # host_label = host_label + " - " + Configuration.parent_node + rand(99).to_s
+        # Hack to include the file name in the xml
+        # so we can use it in the template
+        xml_scan['filename'] = file_name
 
+        # Scan details
         logger.info{ 'Adding ' + host_label }
-        # create the parent node early so we can use it to provide feedback on errors
-        affected_host = content_service.create_node(label: host_label, type: :host)
-
-        node_text = "#[Details]#\n"
-        node_text += "IP = " + scan_details['targetip'] + "\n" if scan_details.has_attribute? "targetip"
-        node_text += "Hostname = " + scan_details['targethostname'] + "\n" if scan_details.has_attribute? "targethostname"
-        node_text += "Port = " + scan_details['targetport'] + "\n" if scan_details.has_attribute? "targetport"
-        node_text += "Banner = " + scan_details['targetbanner'] + "\n" if scan_details.has_attribute? "targetbanner"
-        node_text += "Starttime = " + scan_details['starttime'] + "\n" if scan_details.has_attribute? "starttime"
-        node_text += "Site Name = " + scan_details['sitename'] + "\n" if scan_details.has_attribute? "sitename"
-        node_text += "Site IP = " + scan_details['siteip'] + "\n" if scan_details.has_attribute? "siteip"
-        node_text += "Host Header = " + scan_details['hostheader'] + "\n" if scan_details.has_attribute? "hostheader"
-        node_text += "Errors = " + scan_details['errors'] + "\n" if scan_details.has_attribute? "errors"
-        node_text += "Total Checks = " + scan_details['checks'] + "\n" if scan_details.has_attribute? "checks"
-
+        host_node = content_service.create_node(label: host_label, type: :host)
+        scan_text = template_service.process_template(template: 'scan', data: xml_scan)
         content_service.create_note(
-          text: "#[Title]#\nNikto upload: #{file_name}\n\n#{node_text}",
-          node: affected_host)
+          text: scan_text,
+          node: host_node)
 
         # Check for SSL cert tag and add that data in as well
-        unless scan_details.at_xpath("ssl").nil?
-          ssl_details = scan_details.at_xpath("ssl")
-          node_text = "#[Details]#\n"
-          node_text += "Ciphers = " + ssl_details['ciphers'] + "\n" if ssl_details.has_attribute? "ciphers"
-          node_text += "Issuers = " + ssl_details['issuers'] + "\n" if ssl_details.has_attribute? "issuers"
-          node_text += "Info = " + ssl_details['info'] + "\n" if ssl_details.has_attribute? "info"
-
+        unless xml_scan.at_xpath("ssl").nil?
+          xml_ssl = xml_scan.at_xpath("ssl")
+          ssl_text = template_service.process_template(template: 'ssl', data: xml_ssl)
           content_service.create_note(
-            text: "#[Title]#\nSSL Cert Information\n\n#{node_text}",
-            node: affected_host)
+            text: ssl_text,
+            node: host_node)
         end
 
-        scan_details.xpath("item").each do |item|
-          item_text  = "#[Title]#\n"
-          item_text += "Finding\n\n"
-          item_text += "#[Details]#\n"
-
-          item_title = item.has_attribute?("id") ? item["id"] : "Unknown"
-          if item.has_attribute? 'osvdbid'
-            if item.has_attribute? 'osvdblink'
-              item_text += 'OSVDB = "' + item['osvdbid'] + '":' + item['osvdblink'] + "\n"
-            else
-              item_text += 'OSVDB = ' + item['osvdbid'] + "\n"
-            end
-          end
-
-          item_text += "Request Method = " + item['method'] + "\n"  if item.has_attribute? 'method'
-          item_text += "Description = " + item.at_xpath("description").text + "\n"  unless item.at_xpath("description").nil?
-          item_text += 'Link = "' + item.at_xpath("namelink").text + '":' + item.at_xpath("namelink").text + "\n"  unless item.at_xpath("namelink").nil?
-          item_text += 'IP Based Link = "' + item.at_xpath("iplink").text + '":' + item.at_xpath("iplink").text + "\n"  unless item.at_xpath("iplink").nil?
-
-          alert_node = content_service.create_node(
-          label: item_title,
+        # Items
+        xml_scan.xpath("item").each do |xml_item|
+          item_label = xml_item.has_attribute?("id") ? xml_item["id"] : "Unknown"
+          item_node = content_service.create_node(
+          label: item_label,
           type: :default,
-          parent: affected_host)
+          parent: host_node)
 
+          item_text = template_service.process_template(template: 'item', data: xml_item)
           content_service.create_note(
             text: item_text,
-            node: alert_node)
+            node: item_node)
         end
       end
 

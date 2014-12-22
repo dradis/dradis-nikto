@@ -50,8 +50,15 @@ describe 'Nikto upload plugin' do
         OpenStruct.new(args)
       end.once
       expect(@content_service).to receive(:create_note) do |args|
-        expect(args[:text]).to include("#[Title]#\nNikto upload: localhost.xml")
         expect(args[:node].label).to eq("http://localhost:80/")
+        expect(args[:text]).to include("#[Title]#\nNikto upload: localhost.xml")
+        expect(args[:text]).to_not include("not recognized by the plugin")
+        OpenStruct.new(args)
+      end.once
+      expect(@content_service).to receive(:create_note) do |args|
+        expect(args[:node].label).to eq("http://localhost:80/")
+        expect(args[:text]).to include("SSL Cert Information")
+        expect(args[:text]).to_not include("not recognized by the plugin")
         OpenStruct.new(args)
       end.once
 
@@ -63,6 +70,8 @@ describe 'Nikto upload plugin' do
       expect(@content_service).to receive(:create_note) do |args|
         expect(args[:node].label).to eq("750000")
         expect(args[:text]).to include("/: Directory indexing found.")
+        expect(args[:text]).to_not include("not recognized by the plugin")
+        expect(args[:text]).to include("OSVDB: \"3268\":3268_LINK")
         OpenStruct.new(args)
       end.once
 
@@ -74,6 +83,7 @@ describe 'Nikto upload plugin' do
       expect(@content_service).to receive(:create_note) do |args|
         expect(args[:node].label).to eq("600050")
         expect(args[:text]).to include("Apache/2.2.16 appears to be outdated")
+        expect(args[:text]).to_not include("not recognized by the plugin")
         OpenStruct.new(args)
       end.once
 
@@ -85,6 +95,7 @@ describe 'Nikto upload plugin' do
       expect(@content_service).to receive(:create_note) do |args|
         expect(args[:node].label).to eq("999990")
         expect(args[:text]).to include("Allowed HTTP Methods: GET, HEAD, POST, OPTIONS")
+        expect(args[:text]).to_not include("not recognized by the plugin")
         OpenStruct.new(args)
       end.once
 
@@ -96,6 +107,8 @@ describe 'Nikto upload plugin' do
       expect(@content_service).to receive(:create_note) do |args|
         expect(args[:node].label).to eq("750000")
         expect(args[:text]).to include("/?show=http://cirt.net/rfiinc.txt??: Directory indexing found.")
+        expect(args[:text]).to_not include("not recognized by the plugin")
+        expect(args[:text]).to include("OSVDB: \"n/a\":n/a")
         OpenStruct.new(args)
       end.once
 
