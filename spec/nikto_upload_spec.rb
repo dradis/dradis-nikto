@@ -108,7 +108,7 @@ describe 'Nikto upload plugin' do
         expect(args[:node].label).to eq("750000")
         expect(args[:text]).to include("/?show=http://cirt.net/rfiinc.txt??: Directory indexing found.")
         expect(args[:text]).to_not include("not recognized by the plugin")
-        expect(args[:text]).to include("OSVDB: n/a")
+        expect(args[:text]).to include("OSVDB: \"n/a\":n/a")
         OpenStruct.new(args)
       end.once
 

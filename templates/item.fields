@@ -1,6 +1,5 @@
 item.id
 item.request_method
-item.osvdb
 item.osvdbid
 item.osvdblink
 item.description

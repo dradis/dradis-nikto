@@ -3,7 +3,7 @@ Finding
 
 
 #[Details]#
-OSVDB: %item.osvdb%
+OSVDB: "%item.osvdbid%":%item.osvdblink%
 Request Method: %item.request_method%
 Description: %item.description%
 Link: %item.namelink%

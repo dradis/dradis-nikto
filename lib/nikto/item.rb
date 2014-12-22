@@ -18,7 +18,7 @@ module Nikto
     def supported_tags
       [
         # attributes
-        :id, :request_method, :osvdb, :osvdblink, :osvdbid,
+        :id, :request_method, :osvdblink, :osvdbid,
 
         # simple tags
         :description, :uri, :namelink, :iplink
@@ -52,15 +52,6 @@ module Nikto
         request_method: 'method'
       }
       method_name = translations_table.fetch(method, method.to_s)
-
-      # Build OSVDB link if available
-      if method_name.to_s == 'osvdb'
-        if @xml.attributes.key?('osvdbid') || @xml.attributes.key?('osvdblink')
-          return "\"#{ self.osvdbid }\":#{ self.osvdblink }"
-        else
-          return "n/a"
-        end
-      end
 
       # First we try the attributes
       return @xml.attributes[method_name].value if @xml.attributes.key?(method_name)
