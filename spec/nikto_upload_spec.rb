@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'ostruct'
 
 module Dradis::Plugins
   describe 'Nikto upload plugin' do
