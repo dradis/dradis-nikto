@@ -1,0 +1,6 @@
+#[Request]#
+Request Method: %item.request_method%
+
+#[Links]#
+Link: %item.namelink%
+IP Based Link: %item.iplink%
