@@ -1,6 +1,6 @@
-## Dradis Framework 3.10 (XXX, 2018) ##
+## Dradis Framework 3.10 (August, 2018) ##
 
-*   Create Issues from each finding `id` and a piece of 
+*   Create Issues from each finding `id` and a piece of
     Evidence for each instance of that finding.
 
 *   Label the Node from the `targetip`.
