@@ -1,3 +1,7 @@
+## Dradis Framework 3.15 (September, 2019) ##
+
+*   Added an extra set of `<niktoscan>` tags after a change in Nikto XML structure.
+
 ## Dradis Framework 3.14 (August, 2019) ##
 
 *   No changes.
