@@ -18,14 +18,14 @@ module Dradis::Plugins::Nikto
       doc = Nokogiri::XML(xml)
       logger.info{ 'Done.' }
 
-      if doc.xpath('/nikto/niktoscan/niktoscan/scandetails').empty?
+      if doc.xpath('//niktoscan/scandetails').empty?
         error = "No scan results were detected in the uploaded file (/nikto/niktoscan/scandetails). Ensure you uploaded a Nikto XML report."
         logger.fatal{ error }
         content_service.create_note text: error
         return false
       end
 
-      doc.xpath('/nikto/niktoscan/niktoscan/scandetails').each do |xml_scan|
+      doc.xpath('//niktoscan/scandetails').each do |xml_scan|
         host_label = xml_scan['targetip']
 
         # Hack to include the file name in the xml
