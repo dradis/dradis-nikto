@@ -1,13 +1,9 @@
-module Dradis
-  module Plugins
-    module Nikto
-      class Engine < ::Rails::Engine
-        isolate_namespace Dradis::Plugins::Nikto
+module Dradis::Plugins::Nikto
+  class Engine < ::Rails::Engine
+    isolate_namespace Dradis::Plugins::Nikto
 
-        include ::Dradis::Plugins::Base
-        description 'Processes Nikto output'
-        provides :upload
-      end
-    end
+    include ::Dradis::Plugins::Base
+    description 'Processes Nikto output'
+    provides :upload
   end
 end
