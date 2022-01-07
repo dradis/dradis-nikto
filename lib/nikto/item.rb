@@ -18,10 +18,10 @@ module Nikto
     def supported_tags
       [
         # attributes
-        :id, :request_method, :osvdblink, :osvdbid,
+        :id, :osvdbid, :osvdblink, :request_method,
 
         # simple tags
-        :description, :uri, :namelink, :iplink
+        :description, :iplink, :namelink, :uri, :references
       ]
     end
 

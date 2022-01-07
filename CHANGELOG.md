@@ -1,3 +1,6 @@
+v4.2.0 (XXXX 2022)
+  - Make references available as an issue field
+
 v4.1.0 (November 2021)
   - No changes
 
