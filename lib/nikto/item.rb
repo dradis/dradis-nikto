@@ -57,27 +57,28 @@ module Nikto
       return @xml.attributes[method_name].value if @xml.attributes.key?(method_name)
 
       # Then we try simple children tags
-       # Then we try simple children tags
       tag = @xml.xpath("./#{ method_name }").first
       if tag && !tag.text.blank?
-        return tag.text
+        text = tag.text
+        return tags_with_csv_content.include?(method) ? cleanup_csv(text) : text
       else
         return 'n/a'
       end
 
-      private
-      
-      def cleanup_csv(source)
-        result = source.dup
-        result.gsub!(/\"(.*?)\",/) { "#{$1.strip}\n" }
-        result.gsub!(/\"(.*?)\"/) { "#{$1.strip}" }
-        result
-      end
-
-      def tags_with_csv_content
-        [:references]
-      end
-
     end
+
+    private
+
+    def cleanup_csv(source)
+      result = source.dup
+      result.gsub!(/\"(.*?)\",/) { "#{$1.strip}\n" }
+      result.gsub!(/\"(.*?)\"/) { "#{$1.strip}" }
+      result
+    end
+
+    def tags_with_csv_content
+      [:references]
+    end
+
   end
 end
