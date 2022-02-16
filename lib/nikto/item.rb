@@ -8,6 +8,8 @@ module Nikto
   # Instead of providing separate methods for each supported property we rely
   # on Ruby's #method_missing to do most of the work.
   class Item
+    TAGS_WITH_CSV_CONTENT = %i[references].freeze
+
     # Accepts an XML node from Nokogiri::XML.
     def initialize(xml_node)
       @xml = xml_node
@@ -61,20 +63,17 @@ module Nikto
 
       if tag && tag.text.present?
         text = tag.text
-        tags_with_csv_content.include?(method) ? cleanup_csv(text) : text
-      else
-        'n/a'
+        TAGS_WITH_CSV_CONTENT.include?(method) ? cleanup_csv(text) : text
       end
     end
 
     private
 
     def cleanup_csv(text)
-      CSV.parse(text).join("\n")
-    end
+      # Remove all double quotes from string
+      text = text.tr('"', '')
 
-    def tags_with_csv_content
-      [:references]
+      text.split(',').join("\n")
     end
   end
 end
