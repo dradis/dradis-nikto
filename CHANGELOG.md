@@ -1,5 +1,8 @@
-v4.2.0 (XXXX 2022)
+[v#.#.#] ([month] [YYYY])
   - Make references available as an issue field
+
+v4.2.0 (February 2022)
+  - No changes
 
 v4.1.0 (November 2021)
   - No changes
