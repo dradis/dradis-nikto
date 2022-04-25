@@ -70,10 +70,7 @@ module Nikto
     private
 
     def cleanup_csv(text)
-      # Remove all double quotes from string
-      text = text.tr('"', '')
-
-      text.split(',').join("\n")
+      CSV.parse(text).join("\n")
     end
   end
 end
