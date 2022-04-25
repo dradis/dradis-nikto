@@ -1,4 +1,4 @@
-[v#.#.#] ([month] [YYYY])
+v4.3.0 (April 2022)
   - Make references available as an issue field
 
 v4.2.0 (February 2022)
