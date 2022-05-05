@@ -1,8 +1,9 @@
+item.description
 item.id
-item.request_method
+item.iplink
+item.namelink
 item.osvdbid
 item.osvdblink
-item.description
+item.references
+item.request_method
 item.uri
-item.namelink
-item.iplink

@@ -4,5 +4,5 @@
 #[Details]#
 %item.description%
 
-#[OSVDB]#
-"%item.osvdbid%":%item.osvdblink%
+#[References]#
+%item.references%

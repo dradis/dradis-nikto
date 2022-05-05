@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Dradis::Plugins
-  describe 'Nikto upload plugin' do
+  describe 'Nikto v2.1.4 upload plugin' do
     before(:each) do
       # Stub template service
       templates_dir = File.expand_path('../../templates', __FILE__)
@@ -24,21 +24,14 @@ module Dradis::Plugins
       #
       # They return their argument hashes as objects mimicking
       # Nodes, Issues, etc
-      allow(@content_service).to receive(:create_node) do |args|
-        OpenStruct.new(args)
-      end
-      allow(@content_service).to receive(:create_note) do |args|
-        OpenStruct.new(args)
-      end
-      allow(@content_service).to receive(:create_issue) do |args|
-        OpenStruct.new(args)
-      end
-      allow(@content_service).to receive(:create_evidence) do |args|
-        OpenStruct.new(args)
+      %w[evidence issue node note].each do |resource|
+        allow(@content_service).to receive("create_#{resource}") do |args|
+          OpenStruct.new(args)
+        end
       end
     end
 
-    let(:example_xml) { 'spec/fixtures/files/localhost.xml' }
+    let(:example_xml) { 'spec/fixtures/files/sample_v2.1.4.xml' }
 
     def run_import!
       @importer.import(file: example_xml)

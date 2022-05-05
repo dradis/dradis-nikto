@@ -8,6 +8,8 @@ module Nikto
   # Instead of providing separate methods for each supported property we rely
   # on Ruby's #method_missing to do most of the work.
   class Item
+    TAGS_WITH_CSV_CONTENT = %i[references].freeze
+
     # Accepts an XML node from Nokogiri::XML.
     def initialize(xml_node)
       @xml = xml_node
@@ -18,10 +20,10 @@ module Nikto
     def supported_tags
       [
         # attributes
-        :id, :request_method, :osvdblink, :osvdbid,
+        :id, :osvdbid, :osvdblink, :request_method,
 
         # simple tags
-        :description, :uri, :namelink, :iplink
+        :description, :iplink, :namelink, :uri, :references
       ]
     end
 
@@ -57,10 +59,18 @@ module Nikto
       return @xml.attributes[method_name].value if @xml.attributes.key?(method_name)
 
       # Then we try simple children tags
-      tag = @xml.xpath("./#{ method_name }").first
-      if tag
-        return tag.text
+      tag = @xml.xpath("./#{method_name}").first
+
+      if tag && tag.text.present?
+        text = tag.text
+        TAGS_WITH_CSV_CONTENT.include?(method) ? cleanup_csv(text) : text
       end
+    end
+
+    private
+
+    def cleanup_csv(text)
+      CSV.parse(text).join("\n")
     end
   end
 end
