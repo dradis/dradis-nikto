@@ -1,5 +1,6 @@
 [v#.#.#] ([month] [YYYY])
   - Make references available as an issue field
+  - Registers template mappings locally
 
 v4.3.0 (April 2022)
   - No changes
