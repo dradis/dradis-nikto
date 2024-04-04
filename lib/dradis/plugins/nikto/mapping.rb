@@ -31,5 +31,43 @@ module Dradis::Plugins::Nikto
                       Info: {{ nikto[ssl.info] }}"
       }
     }.freeze
+
+    SOURCE_FIELDS = {
+      evidence: [
+        'item.request_method',
+        'item.uri',
+        'item.namelink',
+        'item.iplink'
+      ],
+      item: [
+        'item.description',
+        'item.id',
+        'item.iplink',
+        'item.namelink',
+        'item.osvdbid',
+        'item.osvdblink',
+        'item.references',
+        'item.request_method',
+        'item.uri'
+      ],
+      scan: [
+        'scan.filename',
+        'scan.targetip',
+        'scan.targethostname',
+        'scan.targetport',
+        'scan.targetbanner',
+        'scan.starttime',
+        'scan.sitename',
+        'scan.siteip',
+        'scan.hostheader',
+        'scan.errors',
+        'scan.checks'
+      ],
+      ssl: [
+        'ssl.ciphers',
+        'ssl.issuers',
+        'ssl.info'
+      ]
+    }.freeze
   end
 end
