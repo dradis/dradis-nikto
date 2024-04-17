@@ -3,8 +3,7 @@ module Dradis::Plugins::Nikto
     DEFAULT_MAPPING = {
       evidence: {
         'Request' => 'Request Method: {{ nikto[item.request_method] }}',
-        'Links' => "Link: {{ nikto[item.namelink] }}\n
-                    IP Based Link: {{ nikto[item.iplink] }}"
+        'Links' => "Link: {{ nikto[item.namelink] }}\nIP Based Link: {{ nikto[item.iplink] }}"
       },
       item: {
         'Title' => '{{ nikto[item.description] }}',
@@ -13,22 +12,11 @@ module Dradis::Plugins::Nikto
       },
       scan: {
         'Title' => 'Nikto upload: {{ nikto[scan.filename] }}',
-        'Details' => "IP: {{ nikto[scan.targetip] }}\n
-                      Hostname: {{ nikto[scan.targethostname] }}\n
-                      Port: {{ nikto[scan.targetport] }}\n
-                      Banner: {{ nikto[scan.targetbanner] }}\n
-                      Starttime: {{ nikto[scan.starttime] }}\n
-                      Site Name: {{ nikto[scan.sitename] }}\n
-                      Site IP: {{ nikto[scan.siteip] }}\n
-                      Host Header: {{ nikto[scan.hostheader] }}\n
-                      Errors: {{ nikto[scan.errors] }}\n
-                      Total Checks: {{ nikto[scan.checks] }}"
+        'Details' => "IP: {{ nikto[scan.targetip] }}\nHostname: {{ nikto[scan.targethostname] }}\nPort: {{ nikto[scan.targetport] }}\nBanner: {{ nikto[scan.targetbanner] }}\nStarttime: {{ nikto[scan.starttime] }}\nSite Name: {{ nikto[scan.sitename] }}\nSite IP: {{ nikto[scan.siteip] }}\nHost Header: {{ nikto[scan.hostheader] }}\nErrors: {{ nikto[scan.errors] }}\nTotal Checks: {{ nikto[scan.checks] }}"
       },
       ssl: {
         'Title' => 'SSL Cert Information',
-        'Details' => "Ciphers: {{ nikto[ssl.ciphers] }}\n
-                      Issuers: {{ nikto[ssl.issuers] }}\n
-                      Info: {{ nikto[ssl.info] }}"
+        'Details' => "Ciphers: {{ nikto[ssl.ciphers] }}\nIssuers: {{ nikto[ssl.issuers] }}\nInfo: {{ nikto[ssl.info] }}"
       }
     }.freeze
 
