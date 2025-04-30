@@ -4,6 +4,9 @@ class NiktoTasks < Thor
   namespace "dradis:plugins:nikto"
 
   desc "upload FILE", "upload Nikto XML results"
+  method_option :state,
+    type: :string,
+    desc: 'The state your issues will be created with. If not provided, the scope will be draft'
   def upload(file_path)
     require 'config/environment'
 
